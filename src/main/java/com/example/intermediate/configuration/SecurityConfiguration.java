@@ -45,12 +45,9 @@ public class SecurityConfiguration {
 
     http.csrf().disable()
 
-            .headers().frameOptions().disable()
-
-            .and()
-            .exceptionHandling()
-            .authenticationEntryPoint(authenticationEntryPointException)
-            .accessDeniedHandler(accessDeniedHandlerException)
+        .exceptionHandling()
+        .authenticationEntryPoint(authenticationEntryPointException)
+        .accessDeniedHandler(accessDeniedHandlerException)
 
         .and()
         .sessionManagement()
@@ -59,10 +56,10 @@ public class SecurityConfiguration {
         .and()
         .authorizeRequests()
         .antMatchers("/api/member/**").permitAll()
-        .antMatchers("/h2-console/**").permitAll()
         .antMatchers("/api/post/**").permitAll()
         .antMatchers("/api/comment/**").permitAll()
-        .anyRequest().permitAll()
+        .antMatchers("/h2-console/**").permitAll()
+        .anyRequest().authenticated()
 
         .and()
         .apply(new JwtSecurityConfiguration(SECRET_KEY, tokenProvider, userDetailsService));

@@ -9,13 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -36,6 +35,9 @@ public class Comment extends Timestamped {
   @Column(nullable = false)
   private String content;
 
+  @Column
+  private Integer countCommentLikes;
+
   public void update(CommentRequestDto commentRequestDto) {
     this.content = commentRequestDto.getContent();
   }
@@ -43,4 +45,6 @@ public class Comment extends Timestamped {
   public boolean validateMember(Member member) {
     return !this.member.equals(member);
   }
+
+
 }

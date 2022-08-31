@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
-
-import com.example.intermediate.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
   private final CommentRepository commentRepository;
-  private final PostRepository postRepository;
 
   private final TokenProvider tokenProvider;
   private final PostService postService;
@@ -49,7 +46,7 @@ public class CommentService {
     if (null == post) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
-    post.updateCount();
+
     Comment comment = Comment.builder()
         .member(member)
         .post(post)
@@ -177,5 +174,4 @@ public class CommentService {
     }
     return tokenProvider.getMemberFromAuthentication();
   }
-
 }

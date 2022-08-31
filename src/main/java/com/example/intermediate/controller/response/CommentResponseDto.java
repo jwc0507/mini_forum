@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class CommentResponseDto {
   private Long id;
   private String author;
+  private Integer likes;
   private String content;
   private LocalDateTime createdAt;
   private LocalDateTime modifiedAt;

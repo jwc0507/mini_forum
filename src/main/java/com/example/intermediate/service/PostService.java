@@ -10,28 +10,20 @@ import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.jwt.TokenProvider;
 import com.example.intermediate.repository.CommentRepository;
 import com.example.intermediate.repository.PostRepository;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
 
-  @Autowired
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
-  private final S3Upload s3Upload;
 
   private final TokenProvider tokenProvider;
 
@@ -55,8 +47,6 @@ public class PostService {
     Post post = Post.builder()
         .title(requestDto.getTitle())
         .content(requestDto.getContent())
-        .image("없어용")
-        .commetnCount(0)
         .member(member)
         .build();
     postRepository.save(post);
@@ -87,6 +77,7 @@ public class PostService {
           CommentResponseDto.builder()
               .id(comment.getId())
               .author(comment.getMember().getNickname())
+              .likes(comment.getCountCommentLikes())
               .content(comment.getContent())
               .createdAt(comment.getCreatedAt())
               .modifiedAt(comment.getModifiedAt())
@@ -101,6 +92,7 @@ public class PostService {
             .content(post.getContent())
             .commentResponseDtoList(commentResponseDtoList)
             .author(post.getMember().getNickname())
+            .likes(post.getCountPostlikes())
             .createdAt(post.getCreatedAt())
             .modifiedAt(post.getModifiedAt())
             .build()
@@ -137,56 +129,9 @@ public class PostService {
     if (post.validateMember(member)) {
       return ResponseDto.fail("BAD_REQUEST", "작성자만 수정할 수 있습니다.");
     }
+
     post.update(requestDto);
     return ResponseDto.success(post);
-  }
-
-  // 사진 등록
-  @Transactional
-  public ResponseDto<String> updateImage(Long id, MultipartFile multipartFile,String fileSize, HttpServletRequest request) throws IOException {
-    System.out.println(id);
-    if (null == request.getHeader("Refresh-Token")) {
-      return ResponseDto.fail("MEMBER_NOT_FOUND",
-              "로그인이 필요합니다.");
-    }
-
-    if (null == request.getHeader("Authorization")) {
-      return ResponseDto.fail("MEMBER_NOT_FOUND",
-              "로그인이 필요합니다.");
-    }
-
-    Member member = validateMember(request);
-    if (null == member) {
-      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-    }
-    Post post = isPresentPost(id);
-    if (null != post) {
-      if (post.validateMember(member)) {
-      return ResponseDto.fail("BAD_REQUEST", "작성자만 이미지를 등록 할 수 있습니다.");
-      }
-      else{
-
-      String imageUrl=s3Upload.upload(multipartFile.getInputStream(),multipartFile.getOriginalFilename(),fileSize);
-      post.updateImage(imageUrl);
-      return ResponseDto.success("이미지 등록 완료"+imageUrl);
-      }
-
-    }
-
-
-    else {
-      return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
-    }
-    /*
-    System.out.println("1 : "+ HttpStatus.CREATED);
-    System.out.println("2 : "+ multipartFile.getInputStream());
-    System.out.println("3 : "+ multipartFile.getOriginalFilename());
-    System.out.println("4 : "+ fileSize);
-    */
-    //System.out.println(post.getImage());
-
-
-
   }
 
   @Transactional
