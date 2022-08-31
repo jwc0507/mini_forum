@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +36,12 @@ public class Post extends Timestamped {
   @Column(nullable = false)
   private String content;
 
+  @Column
+  private String image;
+
+  @Column
+  private int commetnCount;
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
 
@@ -45,6 +53,17 @@ public class Post extends Timestamped {
     this.title = postRequestDto.getTitle();
     this.content = postRequestDto.getContent();
   }
+
+
+  public void updateImage(String url) {
+    this.image = url;
+  }
+
+  public void updateCount() {
+    this.commetnCount += 1;
+  }
+
+
 
   public boolean validateMember(Member member) {
     return !this.member.equals(member);

@@ -22,9 +22,9 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .securityContexts(Arrays.asList(securityContext()))
-                .securitySchemes(Arrays.asList(apiKey()))
+                .securitySchemes(Arrays.asList(apiKey(),apiKey2()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("package com.example.intermediate.controller")) // 특정 패키지경로를 API문서화 한다. 1차 필터
+                .apis(RequestHandlerSelectors.basePackage("com.example.intermediate.controller"))    // 특정 패키지경로를 API문서화 한다. 1차 필터
                 .paths(PathSelectors.any()) // apis중에서 특정 path조건 API만 문서화 하는 2차 필터
                 .build();
 
@@ -40,11 +40,16 @@ public class SwaggerConfig {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Arrays.asList(new SecurityReference("Access-token", authorizationScopes));
+        return Arrays.asList(new SecurityReference("Refresh-Token", authorizationScopes)
+        ,new SecurityReference("Authorization", authorizationScopes));
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("Access-token", "Access-token", "header");
+        return new ApiKey("Refresh-Token", "Refresh-Token", "header");
+    }
+
+    private ApiKey apiKey2() {
+        return new ApiKey("Authorization", "Authorization", "header");
     }
 
 

@@ -1,0 +1,68 @@
+### Post
+POST http://localhost:8080/api/auth/post
+accept: */*
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2RmIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjYxODg0NzE0fQ.SJJhQmqqxLORQ3At3wWYubLlL2jBJ_rZ_aP6x7qnqXE
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjI0ODc3MTR9.L_34mlbvXASSO8TrOUBtCgxNsmw4ncnsD-OeMsBbvy8
+Content-Type: application/json
+
+{
+  "content": "asdf0",
+  "title": "asdf0"
+}
+
+### Comment
+POST http://localhost:8080/api/auth/comment
+accept: */*
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2RmIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjYxODg0NzE0fQ.SJJhQmqqxLORQ3At3wWYubLlL2jBJ_rZ_aP6x7qnqXE
+Refresh-Token: eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjI0ODc3MTR9.L_34mlbvXASSO8TrOUBtCgxNsmw4ncnsD-OeMsBbvy8
+Content-Type: application/json
+
+{
+  "content": "comment",
+  "postId": 5
+}
+
+### 회원가입
+POST http://localhost:8080/api/member/signup
+accept: */*
+Content-Type: application/json
+
+{
+  "nickname": "asdf",
+  "password": "asdf",
+  "passwordConfirm": "asdf"
+}
+
+### 로그인
+POST http://localhost:8080/api/member/login
+accept: */*
+Content-Type: application/json
+
+{
+  "nickname": "asdf",
+  "password": "asdf"
+}
+
+### eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjI0NTQ1NTB9.yXhrdNIu3FLzSIc8cxErdKBOdZ1telKTNcPULo11SbA
+
+### 게시글 수정
+PUT http://localhost:8080/api/auth/post/1
+accept: */*
+Refresh-Token : eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NjI0NjgxMzl9.kUrZXdh44IqqFEcJ5zbxoo8ssAJ2RC2-mjqCWD9PyF4
+Authorization : Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2RmIiwiYXV0aCI6IlJPTEVfTUVNQkVSIiwiZXhwIjoxNjYxODY1MTM5fQ.s8yohFscjK9qboCKxoLVfWTeTMahpjow8AEzxnZ2dvA
+Content-Type: application/json
+
+{
+  "title": "string",
+  "content": "string"
+
+}
+
+###
+
+
+
+
+
+
+

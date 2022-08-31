@@ -1,12 +1,7 @@
 package com.example.intermediate.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class RefreshToken extends Timestamped {
 
   @Id
-  @Column(nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @JoinColumn(name = "member_id", nullable = false)
@@ -28,9 +23,9 @@ public class RefreshToken extends Timestamped {
   private Member member;
 
   @Column(nullable = false)
-  private String value;
+  private String rToken;
 
   public void updateValue(String token) {
-    this.value = token;
+    this.rToken = token;
   }
 }

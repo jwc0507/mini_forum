@@ -45,9 +45,12 @@ public class SecurityConfiguration {
 
     http.csrf().disable()
 
-        .exceptionHandling()
-        .authenticationEntryPoint(authenticationEntryPointException)
-        .accessDeniedHandler(accessDeniedHandlerException)
+            .headers().frameOptions().disable()
+
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPointException)
+            .accessDeniedHandler(accessDeniedHandlerException)
 
         .and()
         .sessionManagement()
@@ -56,6 +59,7 @@ public class SecurityConfiguration {
         .and()
         .authorizeRequests()
         .antMatchers("/api/member/**").permitAll()
+        .antMatchers("/h2-console/**").permitAll()
         .antMatchers("/api/post/**").permitAll()
         .antMatchers("/api/comment/**").permitAll()
         .anyRequest().permitAll()
