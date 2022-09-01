@@ -17,5 +17,7 @@ public interface CommentLikesRepository extends JpaRepository<CommentLikes, Long
 
     Optional<CommentLikes> findByMemberAndCommentId(Member member, Long commentId);
 
+    @Override
+    void deleteById(Long likesId);
 
 }
