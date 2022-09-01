@@ -51,6 +51,7 @@ public class likeService {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
 
+        post.updateLikeCount("up");
         if(postLikesRepository.findByMemberAndPostId(member, postId).isEmpty()) {
             PostLikes postLikes = PostLikes.builder()
                     .postId(postId)
@@ -91,6 +92,7 @@ public class likeService {
         if (post.validateMember(member)) {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
+
 
         PostLikes postLikes = isPresentPostLikes(member,postId);
         if(null == postLikes){
@@ -135,7 +137,7 @@ public class likeService {
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");
         }
-
+        comment.updateLikeCount("up");
         return ResponseDto.success("like success");
 
 
@@ -165,6 +167,7 @@ public class likeService {
         if (comment.validateMember(member)) {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
+
 
         CommentLikes commentLikes = isPresentCommentLikes(member,commentId);
         if(null == commentLikes){
@@ -206,6 +209,7 @@ public class likeService {
                     .isSubCommentlikes(true)
                     .build();
             subCommentLikesRepository.save(subcommentLikes);
+
 
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");

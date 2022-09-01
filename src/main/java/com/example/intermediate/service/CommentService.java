@@ -47,7 +47,7 @@ public class CommentService {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
 
-    post.updateCount();
+    post.updateCommentCount("up");
     Comment comment = Comment.builder()
         .member(member)
         .post(post)
@@ -158,7 +158,10 @@ public class CommentService {
       return ResponseDto.fail("BAD_REQUEST", "작성자만 수정할 수 있습니다.");
     }
 
+
+    Post post = postService.isPresentPost(comment.getPost().getId());
     commentRepository.delete(comment);
+    post.updateCommentCount("down");
     return ResponseDto.success("success");
   }
 

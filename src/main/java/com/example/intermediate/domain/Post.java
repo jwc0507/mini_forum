@@ -37,7 +37,11 @@ public class Post extends Timestamped {
   private String image;
 
   @Column
-  private int commetnCount;
+  private int commentCount;
+
+  @Column
+  private int likeCount;
+
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> comments;
@@ -56,8 +60,22 @@ public class Post extends Timestamped {
     this.image = url;
   }
 
-  public void updateCount() {
-    this.commetnCount += 1;
+  public void updateCommentCount(String upOrDown) {
+    if(upOrDown.equals("up")){
+      this.commentCount+=1;
+    }
+    else {
+      this.commentCount-=1;
+    }
+  }
+
+  public void updateLikeCount(String upOrDown){
+    if(upOrDown.equals("up")){
+      this.likeCount+=1;
+    }
+    else {
+      this.likeCount-=1;
+    }
   }
 
 
