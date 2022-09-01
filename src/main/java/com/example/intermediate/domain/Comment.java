@@ -1,16 +1,12 @@
 package com.example.intermediate.domain;
 
 import com.example.intermediate.controller.request.CommentRequestDto;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+import javax.persistence.*;
 
 import lombok.*;
+
+import java.util.List;
 
 @Builder
 @Getter
@@ -35,11 +31,26 @@ public class Comment extends Timestamped {
   @Column(nullable = false)
   private String content;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CommentLikes> Commentlikes;
+
   @Column
-  private Integer countCommentLikes;
+  private int countCommentLikes;
 
   public void update(CommentRequestDto commentRequestDto) {
     this.content = commentRequestDto.getContent();
+  }
+
+  public void updateLikeCount(String upOrDown){
+    System.out.println(upOrDown);
+    System.out.println("변경전 : "+this.countCommentLikes);
+    if(upOrDown.equals("up")){
+      this.countCommentLikes+=1;
+    }
+    else {
+      this.countCommentLikes-=1;
+    }
+    System.out.println("변경후 : "+this.countCommentLikes);
   }
 
   public boolean validateMember(Member member) {

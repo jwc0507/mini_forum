@@ -16,12 +16,12 @@ public class Scheduler {
     private final PostRepository postRepository;
 
     // 초, 분, 시, 일, 월, 주 순서
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "* * 1 * * *")
     @Transactional
     public void AutoDel() throws InterruptedException {
         List<Post> postList = postRepository.findAll();
         for (int i = 0; i < postList.size(); i++) {
-        if(postList.get(i).getCommetnCount()==0){
+        if(postList.get(i).getCommentCount()==0){
             postRepository.delete(postList.get(i));
             System.out.println("게시물 <"+postList.get(i).getTitle()+">이 삭제되었습니다.");
         }

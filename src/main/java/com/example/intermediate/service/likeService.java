@@ -51,11 +51,13 @@ public class likeService {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
 
+        post.updateLikeCount("up");
         if(postLikesRepository.findByMemberAndPostId(member, postId).isEmpty()) {
             PostLikes postLikes = PostLikes.builder()
                     .postId(postId)
                     .member(member)
                     .isPostlikes(true)
+                    .post(post)
                     .build();
             postLikesRepository.save(postLikes);
 
@@ -92,17 +94,19 @@ public class likeService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
 
+
         PostLikes postLikes = isPresentPostLikes(member,postId);
         if(null == postLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
-
+        post.updateLikeCount("down");
         postLikesRepository.deleteById(postLikes.getId());
 
         return ResponseDto.success("like delete success");
 
     }
 
+    @Transactional
     public ResponseDto<?> commentLikes(Long commentId, HttpServletRequest request) {
         if (null == request.getHeader("Refresh-Token")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -129,8 +133,11 @@ public class likeService {
                     .commentId(commentId)
                     .member(member)
                     .isCommentlikes(true)
+                    .comment(comment)
                     .build();
             commentLikesRepository.save(commentLikes);
+            comment.updateLikeCount("up");
+            System.out.println(comment.getContent());
 
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");
@@ -141,6 +148,7 @@ public class likeService {
 
     }
 
+    @Transactional
     public ResponseDto<?> commentLikeDelete(Long commentId, HttpServletRequest request) {
         if (null == request.getHeader("Refresh-Token")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -166,11 +174,13 @@ public class likeService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
 
+
         CommentLikes commentLikes = isPresentCommentLikes(member,commentId);
         if(null == commentLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
-
+        comment.updateLikeCount("down");
+        System.out.println("좋아요-1");
         commentLikesRepository.deleteById(commentLikes.getId());
 
         return ResponseDto.success("like delete success");
@@ -206,6 +216,7 @@ public class likeService {
                     .isSubCommentlikes(true)
                     .build();
             subCommentLikesRepository.save(subcommentLikes);
+
 
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");

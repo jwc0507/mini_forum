@@ -44,8 +44,10 @@ public class SecurityConfiguration {
     http.cors();
 
     http.csrf().disable()
+            .headers().frameOptions().disable()
 
-        .exceptionHandling()
+            .and()
+            .exceptionHandling()
         .authenticationEntryPoint(authenticationEntryPointException)
         .accessDeniedHandler(accessDeniedHandlerException)
 
