@@ -36,10 +36,19 @@ public class Comment extends Timestamped {
   private String content;
 
   @Column
-  private Integer countCommentLikes;
+  private int countCommentLikes;
 
   public void update(CommentRequestDto commentRequestDto) {
     this.content = commentRequestDto.getContent();
+  }
+
+  public void updateLikeCount(String upOrDown){
+    if(upOrDown.equals("up")){
+      this.countCommentLikes+=1;
+    }
+    else {
+      this.countCommentLikes-=1;
+    }
   }
 
   public boolean validateMember(Member member) {

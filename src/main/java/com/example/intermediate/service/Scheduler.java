@@ -21,7 +21,7 @@ public class Scheduler {
     public void AutoDel() throws InterruptedException {
         List<Post> postList = postRepository.findAll();
         for (int i = 0; i < postList.size(); i++) {
-        if(postList.get(i).getCommetnCount()==0){
+        if(postList.get(i).getCommentCount()==0){
             postRepository.delete(postList.get(i));
             System.out.println("게시물 <"+postList.get(i).getTitle()+">이 삭제되었습니다.");
         }

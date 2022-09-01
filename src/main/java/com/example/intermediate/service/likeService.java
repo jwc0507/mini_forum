@@ -50,6 +50,7 @@ public class likeService {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
 
+        post.updateLikeCount("up");
         if(postLikesRepository.findByMemberAndPostId(member, postId).isEmpty()) {
             PostLikes postLikes = PostLikes.builder()
                     .postId(postId)
@@ -93,6 +94,7 @@ public class likeService {
 
         if(postLikesRepository.findByMemberAndPostId(member, postId).isPresent()){
             postLikesRepository.deleteByMemberAndPostId(member, postId);
+            post.updateLikeCount("down");
         }else{
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
@@ -134,7 +136,7 @@ public class likeService {
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");
         }
-
+        comment.updateLikeCount("up");
         return ResponseDto.success("like success");
 
 
@@ -166,6 +168,7 @@ public class likeService {
         }
 
         if(CommentLikesRepository.findByMemberAndCommentId(member, commentId).isPresent()){
+            comment.updateLikeCount("down");
             CommentLikesRepository.deleteByMemberAndCommentId(member, commentId);
         }else{
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
