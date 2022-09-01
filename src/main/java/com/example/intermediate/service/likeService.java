@@ -27,7 +27,7 @@ public class likeService {
 
     private final PostLikesRepository postLikesRepository;
 
-    private final CommentLikesRepository CommentLikesRepository;
+    private final CommentLikesRepository commentLikesRepository;
 
     public ResponseDto<?> postLikes(Long postId, HttpServletRequest request) {
         if (null == request.getHeader("Refresh-Token")) {
@@ -91,14 +91,14 @@ public class likeService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
 
-        if(postLikesRepository.findByMemberAndPostId(member, postId).isPresent()){
-            postLikesRepository.deleteByMemberAndPostId(member, postId);
-        }else{
+        PostLikes postLikes = isPresentPostLikes(member,postId);
+        if(null == postLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
 
-        return ResponseDto.success("like delete success");
+        postLikesRepository.deleteById(postLikes.getId());
 
+        return ResponseDto.success("like delete success");
 
     }
 
@@ -123,13 +123,13 @@ public class likeService {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
         }
 
-        if(CommentLikesRepository.findByMemberAndCommentId(member, commentId).isEmpty()) {
+        if(commentLikesRepository.findByMemberAndCommentId(member, commentId).isEmpty()) {
             CommentLikes commentLikes = CommentLikes.builder()
                     .commentId(commentId)
                     .member(member)
                     .isCommentlikes(true)
                     .build();
-            CommentLikesRepository.save(commentLikes);
+            commentLikesRepository.save(commentLikes);
 
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");
@@ -165,15 +165,17 @@ public class likeService {
             return ResponseDto.fail("BAD_REQUEST", "작성자만 삭제할 수 있습니다.");
         }
 
-        if(CommentLikesRepository.findByMemberAndCommentId(member, commentId).isPresent()){
-            CommentLikesRepository.deleteByMemberAndCommentId(member, commentId);
-        }else{
+        CommentLikes commentLikes = isPresentCommentLikes(member,commentId);
+        if(null == commentLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
+
+        commentLikesRepository.deleteById(commentLikes.getId());
 
         return ResponseDto.success("like delete success");
 
     }
+
 
 //    public ResponseDto<?> subCommentLikes(Long subComment_id, HttpServletRequest request) {
 //        if (null == request.getHeader("Refresh-Token")) {
@@ -244,6 +246,19 @@ public class likeService {
 //                LikesResponseDto.builder()
 //                        .likes(member.isPostLikes()));
 //    }
+
+
+    @Transactional(readOnly = true)
+    public PostLikes isPresentPostLikes(Member member, Long postId) {
+        Optional<PostLikes> optionalPostLikes = postLikesRepository.findByMemberAndPostId(member, postId);
+        return optionalPostLikes.orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public CommentLikes isPresentCommentLikes(Member member, Long commentId) {
+        Optional<CommentLikes> optionalCommentLikes = commentLikesRepository.findByMemberAndCommentId(member, commentId);
+        return optionalCommentLikes.orElse(null);
+    }
 
 
     @Transactional(readOnly = true)

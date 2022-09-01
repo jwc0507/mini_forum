@@ -9,13 +9,9 @@ import java.util.Optional;
 
 public interface PostLikesRepository extends JpaRepository<PostLikes, Long> {
 
-    Optional<PostLikes> findByPostId(Long postId);
-
-    void deleteByMemberAndPostId(Member member, Long postId);
-
-    List<PostLikes> findAllByPostId(Long postId);
-
     Optional<PostLikes> findByMemberAndPostId(Member member, Long postId);
 
+    @Override
+    void deleteById(Long likesId);
 
 }
