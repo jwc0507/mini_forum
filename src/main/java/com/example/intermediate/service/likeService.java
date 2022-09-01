@@ -57,6 +57,7 @@ public class likeService {
                     .postId(postId)
                     .member(member)
                     .isPostlikes(true)
+                    .post(post)
                     .build();
             postLikesRepository.save(postLikes);
 
@@ -132,6 +133,7 @@ public class likeService {
                     .commentId(commentId)
                     .member(member)
                     .isCommentlikes(true)
+                    .comment(comment)
                     .build();
             commentLikesRepository.save(commentLikes);
             comment.updateLikeCount("up");

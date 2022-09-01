@@ -23,6 +23,10 @@ public class CommentLikes {
     @Column
     private boolean isCommentlikes;
 
+    @JoinColumn(name = "comment_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Comment comment;
+
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
