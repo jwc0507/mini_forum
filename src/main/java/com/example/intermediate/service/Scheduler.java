@@ -16,7 +16,7 @@ public class Scheduler {
     private final PostRepository postRepository;
 
     // 초, 분, 시, 일, 월, 주 순서
-    @Scheduled(cron = "30 * * * * *")
+    @Scheduled(cron = "* * 1 * * *")
     @Transactional
     public void AutoDel() throws InterruptedException {
         List<Post> postList = postRepository.findAll();
