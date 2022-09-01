@@ -98,13 +98,14 @@ public class likeService {
         if(null == postLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
-
+        post.updateLikeCount("down");
         postLikesRepository.deleteById(postLikes.getId());
 
         return ResponseDto.success("like delete success");
 
     }
 
+    @Transactional
     public ResponseDto<?> commentLikes(Long commentId, HttpServletRequest request) {
         if (null == request.getHeader("Refresh-Token")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -133,16 +134,19 @@ public class likeService {
                     .isCommentlikes(true)
                     .build();
             commentLikesRepository.save(commentLikes);
+            comment.updateLikeCount("up");
+            System.out.println(comment.getContent());
 
         }else{
             return ResponseDto.fail("LIKE_TRUE","이미 like 상태입니다.");
         }
-        comment.updateLikeCount("up");
+
         return ResponseDto.success("like success");
 
 
     }
 
+    @Transactional
     public ResponseDto<?> commentLikeDelete(Long commentId, HttpServletRequest request) {
         if (null == request.getHeader("Refresh-Token")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
@@ -173,7 +177,8 @@ public class likeService {
         if(null == commentLikes){
             return ResponseDto.fail("LIKE_FALSE","like 상태가 아닙니다.");
         }
-
+        comment.updateLikeCount("down");
+        System.out.println("좋아요-1");
         commentLikesRepository.deleteById(commentLikes.getId());
 
         return ResponseDto.success("like delete success");

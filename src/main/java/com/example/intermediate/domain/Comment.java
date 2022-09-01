@@ -43,12 +43,15 @@ public class Comment extends Timestamped {
   }
 
   public void updateLikeCount(String upOrDown){
+    System.out.println(upOrDown);
+    System.out.println("변경전 : "+this.countCommentLikes);
     if(upOrDown.equals("up")){
       this.countCommentLikes+=1;
     }
     else {
       this.countCommentLikes-=1;
     }
+    System.out.println("변경후 : "+this.countCommentLikes);
   }
 
   public boolean validateMember(Member member) {
