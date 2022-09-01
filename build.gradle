@@ -2,6 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
+
 }
 
 group = 'com.example'
@@ -22,7 +23,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
@@ -35,6 +35,16 @@ dependencies {
 
 //     validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+//  ++
+    runtimeOnly 'com.h2database:h2'
+
+//  ++ swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+
+//  ++ AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 }
 
