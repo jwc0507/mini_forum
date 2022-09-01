@@ -40,15 +40,15 @@ public class LikesController {
         return likeService.commentLikeDelete(commentId, request);
     }
 
-//    @RequestMapping(value = "/api/auth/like/subComment/{subComment_id}", method = RequestMethod.POST)
-//    public ResponseDto<?> subCommentLikes(@PathVariable Long subComment_id, HttpServletRequest request) {
-//        return likeService.subCommentLikes(subComment_id, request);
-//    }
-//
-//    @RequestMapping(value = "/api/auth/like/subComment/{subComment_id}", method = RequestMethod.DELETE)
-//    public ResponseDto<?> subCommentLikeDelete(@PathVariable Long subComment_id, HttpServletRequest request) {
-//        return likeService.subCommentLikeDelete(subComment_id, request);
-//    }
+    @RequestMapping(value = "/api/auth/like/subComment/{subCommentId}", method = RequestMethod.POST)
+    public ResponseDto<?> subCommentLikes(@PathVariable Long subCommentId, HttpServletRequest request) {
+        return likeService.subCommentLikes(subCommentId, request);
+    }
+
+    @RequestMapping(value = "/api/auth/like/subComment/{subCommentId}", method = RequestMethod.DELETE)
+    public ResponseDto<?> subCommentLikeDelete(@PathVariable Long subCommentId, HttpServletRequest request) {
+        return likeService.subCommentLikeDelete(subCommentId, request);
+    }
 
 
 }
