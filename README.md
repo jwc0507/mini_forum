@@ -1,1 +1,1 @@
-# Mentoring-Assignment-Intermediate
+# 좋아요, 댓글, 이미지 업로드 기능이 있는 미니 포럼 프로젝트 입니다.
